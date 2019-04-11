@@ -53,7 +53,9 @@ class TodoListViewController: UITableViewController {
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             //will happen when user clicks on the add item button in the UIAlert
             
-            self.itemArray.append(textField.text!)
+            guard let textFieldText = textField.text else { return }
+            
+            self.itemArray.append(textFieldText)
             self.tableView.reloadData()
         }
         
