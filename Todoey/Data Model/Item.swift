@@ -7,3 +7,11 @@
 //
 
 import Foundation
+
+class Item {
+    //Properties
+    var title: String = ""
+    var done: Bool = false
+    
+    
+}
