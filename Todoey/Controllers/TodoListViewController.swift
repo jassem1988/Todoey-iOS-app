@@ -17,11 +17,9 @@ class TodoListViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         
-        
-        
-        print(dataFilePath)
-        
+//        print(dataFilePath)
         
         let newItem = Item()
         newItem.title = "take the trash"
@@ -71,7 +69,7 @@ class TodoListViewController: UITableViewController {
         //refractor
         itemArray[indexPath.row].done = !itemArray[indexPath.row].done
         
-        tableView.reloadData()
+        saveItems()
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -93,16 +91,8 @@ class TodoListViewController: UITableViewController {
             
             self.itemArray.append(newItem)
             
-            let encoder = PropertyListEncoder()
+            self.saveItems()
             
-            do {
-                let data = try encoder.encode(self.itemArray)
-                try data.write(to: self.dataFilePath!)
-            } catch {
-                print("Error encoding item array \(error)")
-            }
-            
-            self.tableView.reloadData()
         }
         
         ac.addTextField { (alertTextField) in
@@ -112,6 +102,22 @@ class TodoListViewController: UITableViewController {
         
         ac.addAction(action)
         present(ac, animated: true, completion: nil)
+        
+    }
+    
+    //MARK - Data Menipulation Methods
+    
+    func saveItems() {
+        let encoder = PropertyListEncoder()
+        
+        do {
+            let data = try encoder.encode(itemArray)
+            try data.write(to: dataFilePath!)
+        } catch {
+            print("Error encoding item array \(error)")
+        }
+        
+        self.tableView.reloadData()
         
     }
     
