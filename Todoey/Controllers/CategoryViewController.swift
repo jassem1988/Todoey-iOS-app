@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 class CategoryViewController: UITableViewController {
-    //properties
+    //Properties
     
     var categories = [Category]()
     
@@ -19,11 +19,16 @@ class CategoryViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+//        let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
+//        print(dataFilePath)
+        
        loadCategories()
  
     }
     
     //MARK: - TableView Datasource Methods
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return categories.count
     }
@@ -35,7 +40,47 @@ class CategoryViewController: UITableViewController {
         
         return cell
     }
+    
+    //MARK: - TableView Delegate Methods
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "goToItems", sender: self)
+        
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationVC = segue.destination as! TodoListViewController
+        
+        if let indexPath = tableView.indexPathForSelectedRow {
+            destinationVC.selectedCategory = categories[indexPath.row]
+            
+        }
+        
+    }
   
+    
+    //MARK: - Data Menipulation Methods
+    
+    func saveCategories() {
+        do {
+            try context.save()
+        } catch {
+            print("Error saving to context, \(error)")
+        }
+        
+        tableView.reloadData()
+    }
+    
+    func loadCategories(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
+        do {
+            categories = try context.fetch(request)
+        } catch {
+            print("Error fetching context, \(error)")
+        }
+        
+        tableView.reloadData()
+    }
     
     //MARK: - Add new Categories
     
@@ -69,33 +114,13 @@ class CategoryViewController: UITableViewController {
     }
 
     
-    //MARK: - Data Menipulation Methods
-    
-    func saveCategories() {
-        do {
-            try context.save()
-        } catch {
-            print("Error saving to context, \(error)")
-        }
-        
-        tableView.reloadData()
-    }
-    
-    func loadCategories(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
-        do {
-            categories = try context.fetch(request)
-        } catch {
-            print("Error fetching context, \(error)")
-        }
-        
-        tableView.reloadData()
-    }
     
     
     
     
     
-    //MARK: - TableView Delegate Methods
+    
+   
     
     
     
