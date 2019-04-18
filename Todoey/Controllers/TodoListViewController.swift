@@ -74,9 +74,9 @@ class TodoListViewController: UITableViewController {
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             //will happen when user clicks on the add item button in the UIAlert
             
-            guard let textFieldText = textField.text else { return }
-            
             let newItem = Item(context: self.context)
+            
+            guard let textFieldText = textField.text else { return }
             
             newItem.title = textFieldText
             newItem.done = false
@@ -107,7 +107,7 @@ class TodoListViewController: UITableViewController {
             print("Error saving context, \(error)")
         }
         
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
     
     func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
