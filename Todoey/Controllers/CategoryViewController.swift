@@ -60,7 +60,7 @@ class CategoryViewController: UITableViewController {
     }
   
     
-    //MARK: - Data Menipulation Methods
+    //MARK: - Data Manipulation Methods
     
     func saveCategories() {
         do {
