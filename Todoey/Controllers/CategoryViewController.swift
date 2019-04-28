@@ -7,10 +7,12 @@
 //
 
 import UIKit
-import CoreData
+import RealmSwift
 
 class CategoryViewController: UITableViewController {
     //Properties
+    
+    let realm = try! Realm()
     
     var categories = [Category]()
     
@@ -23,7 +25,7 @@ class CategoryViewController: UITableViewController {
 //        let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
 //        print(dataFilePath)
         
-       loadCategories()
+//       loadCategories()
  
     }
     
@@ -62,9 +64,11 @@ class CategoryViewController: UITableViewController {
     
     //MARK: - Data Manipulation Methods
     
-    func saveCategories() {
+    func save(category: Category) {
         do {
-            try context.save()
+            try realm.write {
+                realm.add(category)
+            }
         } catch {
             print("Error saving to context, \(error)")
         }
@@ -72,15 +76,15 @@ class CategoryViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    func loadCategories(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
-        do {
-            categories = try context.fetch(request)
-        } catch {
-            print("Error fetching context, \(error)")
-        }
-        
-        tableView.reloadData()
-    }
+//    func loadCategories(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
+//        do {
+//            categories = try context.fetch(request)
+//        } catch {
+//            print("Error fetching context, \(error)")
+//        }
+//        
+//        tableView.reloadData()
+//    }
     
     //MARK: - Add new Categories
     
@@ -90,7 +94,7 @@ class CategoryViewController: UITableViewController {
         
         let ac = UIAlertController(title: "Add New Category", message: nil, preferredStyle: .alert)
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
-            let newCategory = Category(context: self.context)
+            let newCategory = Category()
             
             guard let textFieldText = textField.text else { return }
             
@@ -98,7 +102,7 @@ class CategoryViewController: UITableViewController {
             
             self.categories.append(newCategory)
             
-            self.saveCategories()
+            self.save(category: newCategory)
             
         }
         
