@@ -16,7 +16,4 @@ class Item: Object {
     
     //Inverse Relationship
     let parentCategory = LinkingObjects(fromType: Category.self, property: "items")
-    
-    
-    
 }
