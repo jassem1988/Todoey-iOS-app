@@ -21,9 +21,6 @@ class CategoryViewController: SwipeTableViewController {
         
         loadCategories()
         
-        tableView.rowHeight = 80.0
-    
-        
     }
     
     //MARK: - TableView Datasource Methods
@@ -38,8 +35,6 @@ class CategoryViewController: SwipeTableViewController {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
         cell.textLabel?.text = categories?[indexPath.row].name ?? "No Categories Added Yet"
-        
-
         
         return cell
     }
